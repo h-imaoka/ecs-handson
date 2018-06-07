@@ -1,0 +1,12 @@
+botocore==1.10.33
+click==6.7
+docutils==0.14
+Flask==1.0.2
+itsdangerous==0.24
+Jinja2==2.10
+jmespath==0.9.3
+MarkupSafe==1.0
+pynamodb==3.3.0
+python-dateutil==2.7.3
+six==1.11.0
+Werkzeug==0.14.1
