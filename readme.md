@@ -1,10 +1,18 @@
 Multi-Container @ local-docker
 
+# step 0 gitの使い方
+
+```
+git clone git@github.com:h-imaoka/ecs-handson.git
+#とりあえずpull してから、ブランチ切り替え
+git checkout -b local-docker origin/local-docker
+```
+
 # コンテナ間通信用ネットワークの作成
 `docker network create flask-net`
 
 # dynamo-local コンテナ作成
-`ocker run -p 8001:8000 dwmkerr/dynamodb --network flask-net --name localdynamo`
+`docker run -itd -p 8001:8000 --network flask-net --name localdynamo dwmkerr/dynamodb`
 
 ## dynamo-localのshellを確認してみる
 http://0.0.0.0:8001/shell
