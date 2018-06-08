@@ -32,15 +32,9 @@
              $.ajax({
                  url: '/shorten/' + $("#url").val(),
                  success: function(data){
-                     if ($('#result').size()) {
-                         $("#result").html(
-                             "<h3><a href='/" + data + "'>{{ url_root }}" + data + "</a></h3>"
-                         );
-                     } else {
                          $("#main").append(
                              "<div class='alert alert-info' id='result'><h3><a href='/" + data + "'>{{ url_root }}" + data + "</a></h3></div>"
                          );
-                     }
                  }
              });
          });

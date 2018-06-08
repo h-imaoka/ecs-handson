@@ -11,8 +11,8 @@ from pynamodb.attributes import UnicodeAttribute
 class Url(Model):
     class Meta:
         table_name = "shortened-urls"
-        host = "http://0.0.0.0:8000"
-        region = "us-west-2"
+        host = os.environ.get("FLASK_APP_DYNAMO_HOST")
+        region = os.environ.get("FLASK_APP_REGION")
 
     class CodeIndex(GlobalSecondaryIndex):
         class Meta:
@@ -68,4 +68,4 @@ if __name__ == "__main__":
     if not Url.exists():
         print("Creating table...")
         Url.create_table(wait=True, read_capacity_units=1, write_capacity_units=1)
-    app.run()
+    app.run(host='0.0.0.0')
