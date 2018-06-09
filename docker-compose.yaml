@@ -5,9 +5,14 @@ services:
     image: dwmkerr/dynamodb
     ports:
       - "8002:8000"
+  wait-dynamo:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - localdynamo
+    command: localdynamo:8000
   handson:
      depends_on:
-       - localdynamo
+       - wait-dynamo
      image: docker-ho:1.0
      ports:
        - "5000"
