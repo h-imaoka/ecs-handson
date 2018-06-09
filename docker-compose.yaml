@@ -1,0 +1,15 @@
+version: '3.3'
+
+services:
+  localdynamo:
+    image: dwmkerr/dynamodb
+    ports:
+      - "8002:8000"
+  handson:
+     depends_on:
+       - localdynamo
+     image: docker-ho:1.0
+     ports:
+       - "5000"
+     environment:
+       FLASK_APP_DYNAMO_HOST: "http://localdynamo:8000"

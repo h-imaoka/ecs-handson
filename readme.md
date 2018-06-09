@@ -1,32 +1,32 @@
-Multi-Container @ local-docker
+Multi-Container @ local via docker-composer
+====
 
 # step 0 gitの使い方
 
 ```
 git clone git@github.com:h-imaoka/ecs-handson.git
 #とりあえずpull してから、ブランチ切り替え
-git checkout -b local-docker origin/local-docker
+git checkout -b local-compose origin/local-compose
 ```
 
-# コンテナ間通信用ネットワークの作成
-`docker network create flask-net`
+# docker-composeで起動してみる
+`docker-compose up`
+## docker-compose何がいいの？
+複数コンテナ構築・設計を1ファイルで管理管轄
 
-# dynamo-local コンテナ作成
-`docker run -itd -p 8001:8000 --network flask-net --name localdynamo dwmkerr/dynamodb`
+- ネットワーク(link)の指定
+- 環境変数
+- 依存関係(起動順)
 
-## dynamo-localのshellを確認してみる
-http://0.0.0.0:8001/shell
+運用上ほぼ必須になるはず、覚えておいて損はない。
 
-ただし、このアクセスはあくまでもローカルマシンからブラウザで確認するためだけのもの、`docker run`で指定した `-p 8001:8000` は必須ではない。
+### このままだと、うまく動きません！ので、調べて直しましょう
 
-コンテナ間通信は `network flask-net` 経由となる
+# トラブルシューティング
+## どこがダメか調べる
+ヒント
+- ログ見直す
+- flask側のコマンドを一旦 /bin/shとかに変えて、起動後すぐに死なないようにして、入って調査する
 
-# アプリ用 docker imageのビルド
-`docker build . -t docker-ho:1.0`
-
-# アプリ用 コンテナ作成
-`docker run -itd -P --network flask-net --name app0 -e FLASK_APP_DYNAMO_HOST="http://localdynamo:8000" docker-ho:1.0`
-
-dynamo-localとコンテナ間通信をするため、 `flask-net` を利用する。
-`--name` で指定した名前で コンテナ内から名前解決できる。
-これを使って、 local-dynamoのエンドポイントを指定する=環境変数を上書きしている。
+# 後始末
+`docker-conpose down`
