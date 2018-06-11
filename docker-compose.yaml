@@ -5,14 +5,9 @@ services:
     image: cnadiminti/dynamodb-local
     ports:
       - "8002:8000"
-  wait-dynamo:
-    depends_on:
-      - localdynamo
-    image: dadarek/wait-for-dependencies
-    command: localdynamo:8000
   handson:
      depends_on:
-       - wait-dynamo
+       - localdynamo
      image: docker-ho
      ports:
        - "5000:5000"
