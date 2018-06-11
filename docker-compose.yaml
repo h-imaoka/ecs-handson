@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   localdynamo:
-    image: dwmkerr/dynamodb
+    image: cnadiminti/dynamodb-local
     ports:
       - "8002:8000"
   wait-dynamo:
