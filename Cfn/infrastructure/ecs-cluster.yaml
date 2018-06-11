@@ -1,0 +1,208 @@
+Description: >
+    This template deploys an ECS cluster to the provided VPC and subnets
+    using an Auto Scaling Group
+
+Parameters:
+
+    EnvironmentName:
+        Description: An environment name that will be prefixed to resource names
+        Type: String
+
+    InstanceType:
+        Description: Which instance type should we use to build the ECS cluster?
+        Type: String
+        Default: c4.large
+
+    ClusterSize:
+        Description: How many ECS hosts do you want to initially deploy?
+        Type: Number
+        Default: 4
+
+    VPC:
+        Description: Choose which VPC this ECS cluster should be deployed to
+        Type: AWS::EC2::VPC::Id
+
+    Subnet1:
+        Description: Choose which subnets this ECS cluster should be deployed to
+        Type: AWS::EC2::Subnet::Id
+
+    Subnet2:
+        Description: Choose which subnets this ECS cluster should be deployed to
+        Type: AWS::EC2::Subnet::Id
+
+    SecurityGroup:
+        Description: Select the Security Group to use for the ECS cluster hosts
+        Type: AWS::EC2::SecurityGroup::Id
+
+Mappings:
+
+    # These are the latest ECS optimized AMIs as of Feb 2018:
+    #
+    #   amzn-ami-2017.09.h-amazon-ecs-optimized
+    #   ECS agent:    1.17.1
+    #   Docker:       17.09.1-ce
+    #   ecs-init:     1.17.1-1
+    #
+    # You can find the latest available on this page of our documentation:
+    # http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
+    # (note the AMI identifier is region specific)
+
+    AWSRegionToAMI:
+        us-east-2:
+            AMI: ami-b86a5ddd
+        us-east-1:
+            AMI: ami-a7a242da
+        us-west-2:
+            AMI: ami-92e06fea
+        us-west-1:
+            AMI: ami-9ad4dcfa
+        eu-west-3:
+            AMI: ami-698b3d14
+        eu-west-2:
+            AMI: ami-f4e20693
+        eu-west-1:
+            AMI: ami-0693ed7f
+        eu-central-1:
+            AMI: ami-0799fa68
+        ap-northeast-2:
+            AMI: ami-a5dd70cb
+        ap-northeast-1:
+            AMI: ami-68ef940e
+        ap-southeast-2:
+            AMI: ami-ee884f8c
+        ap-southeast-1:
+            AMI: ami-0a622c76
+        ca-central-1:
+            AMI: ami-5ac94e3e
+        ap-south-1:
+            AMI: ami-2e461a41
+        sa-east-1:
+            AMI: ami-d44008b8
+
+Resources:
+
+    ECSCluster:
+        Type: AWS::ECS::Cluster
+        Properties:
+            ClusterName: !Ref EnvironmentName
+
+    ECR:
+      Type: AWS::ECR::Repository
+      Properties:
+        RepositoryName: !Ref EnvironmentName
+
+    EC2Instance1:
+        Type: AWS::EC2::Instance
+        Properties:
+            ImageId:  !FindInMap [AWSRegionToAMI, !Ref "AWS::Region", AMI]
+            InstanceType: !Ref InstanceType
+            SecurityGroupIds:
+                - !Ref SecurityGroup
+            IamInstanceProfile: !Ref ECSInstanceProfile
+            SubnetId: !Ref Subnet1
+            Tags:
+              - Key: Name
+                Value: ecs-node-1
+            UserData:
+                "Fn::Base64": !Sub |
+                    #!/bin/bash
+                    echo ECS_CLUSTER=${EnvironmentName} >> /etc/ecs/ecs.config
+
+
+    # This IAM Role is attached to all of the ECS hosts. It is based on the default role
+    # published here:
+    # http://docs.aws.amazon.com/AmazonECS/latest/developerguide/instance_IAM_role.html
+    #
+    # You can add other IAM policy statements here to allow access from your ECS hosts
+    # to other AWS services. Please note that this role will be used by ALL containers
+    # running on the ECS host.
+
+    ECSRole:
+        Type: AWS::IAM::Role
+        Properties:
+            Path: /
+            RoleName: !Sub ${EnvironmentName}-ECSRole-${AWS::Region}
+            AssumeRolePolicyDocument: |
+                {
+                    "Statement": [{
+                        "Action": "sts:AssumeRole",
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "ec2.amazonaws.com"
+                        }
+                    }]
+                }
+            Policies:
+                - PolicyName: ecs-service
+                  PolicyDocument: |
+                    {
+                        "Statement": [{
+                            "Effect": "Allow",
+                            "Action": [
+                                "ecs:CreateCluster",
+                                "ecs:DeregisterContainerInstance",
+                                "ecs:DiscoverPollEndpoint",
+                                "ecs:Poll",
+                                "ecs:RegisterContainerInstance",
+                                "ecs:StartTelemetrySession",
+                                "ecs:Submit*",
+                                "ecr:BatchCheckLayerAvailability",
+                                "ecr:BatchGetImage",
+                                "ecr:GetDownloadUrlForLayer",
+                                "ecr:GetAuthorizationToken",
+                                "ec2:DescribeInstanceStatus",
+                                "ds:CreateComputer",
+                                "ds:DescribeDirectories",
+                                "s3:PutObject",
+                                "s3:GetObject",
+                                "s3:AbortMultipartUpload",
+                                "s3:ListMultipartUploadParts",
+                                "s3:ListBucket",
+                                "s3:ListBucketMultipartUploads"
+                            ],
+                            "Resource": "*"
+                        }]
+                    }
+
+    ECSInstanceProfile:
+        Type: AWS::IAM::InstanceProfile
+        Properties:
+            Path: /
+            Roles:
+                - !Ref ECSRole
+
+    ECSServiceAutoScalingRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    Action:
+                    - 'sts:AssumeRole'
+                    Effect: Allow
+                    Principal:
+                        Service:
+                        - application-autoscaling.amazonaws.com
+            Path: /
+            Policies:
+            - PolicyName: ecs-service-autoscaling
+              PolicyDocument:
+                  Statement:
+                      Effect: Allow
+                      Action:
+                      - application-autoscaling:*
+                      - cloudwatch:DescribeAlarms
+                      - cloudwatch:PutMetricAlarm
+                      - ecs:DescribeServices
+                      - ecs:UpdateService
+                      Resource: "*"
+
+Outputs:
+
+    Cluster:
+        Description: A reference to the ECS cluster
+        Value: !Ref ECSCluster
+
+    ECSServiceAutoScalingRole:
+        Description: A reference to ECS service auto scaling role
+        Value: !GetAtt ECSServiceAutoScalingRole.Arn
