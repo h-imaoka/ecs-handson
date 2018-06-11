@@ -27,22 +27,25 @@
         </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
-         $("#shorten").click(function () {
-             console.log($("#url").val());
-             $.ajax({
-                 if ($('#result').size()) {
-                     $("#result").html(
-                         "<h3><a href='/" + data + "'>{{ url_root }}" + data + "</a></h3>"
-                     );
-                 } else {
-                     $("#main").append(
-                         "<div class='alert alert-info' id='result'><h3><a href='/" + data + "'>{{ url_root }}" + data + "</a></h3></div>"
-                     );
-                 }
-             }
-             );
-         });
-        </script>
+  $("#shorten").click(function () {
+    console.log($("#url").val());
+    $.ajax({
+      url: '/shorten/' + $("#url").val(),
+      success: function(data){
+        if ($('#result').size()) {
+          $("#result").html(
+            "<h3><a href='/" + data + "'>{{ url_root }}" + data + "</a></h3>"
+          );
+        } else {
+          $("#main").append(
+          "<div class='alert alert-info' id='result'><h3><a href='/" + data + "'>{{ url_root }}" + data + "</a></h3></div>"
+          );
+        }
+      }
+    }
+    );
+  });
+</script>
     </div>
     </body>
 </html>
