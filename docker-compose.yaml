@@ -5,16 +5,11 @@ services:
     image: cnadiminti/dynamodb-local
     ports:
       - "8002:8000"
-  wait-dynamo:
-    image: dadarek/wait-for-dependencies
-    depends_on:
-      - localdynamo
-    command: localdynamo:8000
   handson:
      depends_on:
-       - wait-dynamo
-     image: docker-ho:1.0
+       - localdynamo
+     image: docker-ho:1.1
      ports:
-       - "5000"
+       - "5000:5000"
      environment:
        FLASK_APP_DYNAMO_HOST: "http://localdynamo:8000"

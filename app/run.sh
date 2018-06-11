@@ -9,6 +9,7 @@ if [ "${FLASK_APP_PRODUCTION:-undef}" = "undef" ];
 then
     export AWS_ACCESS_KEY_ID=DYLOCAL
     export AWS_SECRET_ACCESS_KEY=dummy
+    dockerize -wait ${FLASK_APP_DYNAMO_HOST}
 else
     unset FLASK_APP_DYNAMO_HOST
 fi
