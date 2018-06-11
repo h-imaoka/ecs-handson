@@ -1,4 +1,5 @@
-Multi-Container @ local-docker
+マルチコンテナ by Docker
+====
 
 # step 0 gitの使い方
 
@@ -12,7 +13,7 @@ git checkout -b local-docker origin/local-docker
 `docker network create flask-net`
 
 # dynamo-local コンテナ作成
-`docker run -itd -p 8001:8000 --network flask-net --name localdynamo dwmkerr/dynamodb`
+`docker run -d -p 8001:8000 --network flask-net --name localdynamo cnadiminti/dynamodb-local`
 
 ## dynamo-localのshellを確認してみる
 http://0.0.0.0:8001/shell
