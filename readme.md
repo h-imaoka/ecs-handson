@@ -1,4 +1,4 @@
-Multi-Container @ local via docker-composer
+iret向けハードモード
 ====
 
 # step 0 gitの使い方
@@ -6,27 +6,24 @@ Multi-Container @ local via docker-composer
 ```
 git clone git@github.com:h-imaoka/ecs-handson.git
 #とりあえずpull してから、ブランチ切り替え
-git checkout -b local-compose origin/local-compose
+git checkout -b ecs-hard-mode origin/ecs-hard-mode
 ```
 
-# docker-composeで起動してみる
+# 変更点
+nginxを追加して fabiconを nginxで配信、それ以外は flaskへ流す
+
+## localにて
+### nginx のコンテナ build
+`docker build . -f Dockerfile-nginx -t nginx-ho:latest`
+
+### docker-composeで試す
 `docker-compose up`
-## docker-compose何がいいの？
-複数コンテナ構築・設計を1ファイルで管理管轄
 
-- ネットワーク(link)の指定
-- 環境変数
-- 依存関係(起動順)
+http:0.0.0.0:8080/
+http:0.0.0.0:8080/favicon.ico
 
-運用上ほぼ必須になるはず、覚えておいて損はない。
-
-### このままだと、うまく動きません！ので、調べて直しましょう
-
-# トラブルシューティング
-## どこがダメか調べる
+## ECSにて
 ヒント
-- ログ見直す
-- flask側のコマンドを一旦 /bin/shとかに変えて、起動後すぐに死なないようにして、入って調査する
-
-# 後始末
-`docker-conpose down`
+- nginxは外に晒す = composeと同じ 
+- handson と nginx はコンテナ間通信するので、linkの設定が必要
+- コンテナはもちろん、ecs-agentのログも cwlogsで確認する

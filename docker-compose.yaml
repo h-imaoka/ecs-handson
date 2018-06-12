@@ -9,7 +9,11 @@ services:
      depends_on:
        - localdynamo
      image: docker-ho
-     ports:
-       - "5000:5000"
      environment:
        FLASK_APP_DYNAMO_HOST: "http://localdynamo:8000"
+  nginx:
+     depends_on:
+       - handson
+     image: nginx-ho
+     ports:
+       - "8080:80"
