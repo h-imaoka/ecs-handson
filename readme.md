@@ -39,6 +39,7 @@ aws s3 ls
 
 
 # アプリケーションをローカルで動かす (時間があれば)
+![overview](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/local.png)
 
 ## ひつようなもの
 - docker
