@@ -1,32 +1,56 @@
-Multi-Container @ local via docker-composer
+ECSクラスタで動かす
 ====
 
 # step 0 gitの使い方
 
 ```
-git clone git@github.com:h-imaoka/ecs-handson.git
-#とりあえずpull してから、ブランチ切り替え
-git checkout -b local-compose origin/local-compose
+#ブランチ切り替え
+git checkout -b ecs-service origin/ecs-service
 ```
 
-# docker-composeで起動してみる
-`docker-compose up`
-## docker-compose何がいいの？
-複数コンテナ構築・設計を1ファイルで管理管轄
+# まだなら、CloudFormationでハンズオン用スタックを作成する
+CloudFormationの画面から
+1. `Create-Stack`
+2. ファイルを選択で、 Cfn/master.yamlを選択
+3. スタック名は ecs-handsonとか、なんでもOK
+4. IAM系の作成してもOK?のチェックボックスをONにする
 
-- ネットワーク(link)の指定
-- 環境変数
-- 依存関係(起動順)
+# 構成概要
+![overview](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/ECS-overview.png)
 
-運用上ほぼ必須になるはず、覚えておいて損はない。
+# ECSがやってくれること
+![ecsecr](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/ECS-ECR.png)
 
-### このままだと、うまく動きません！ので、調べて直しましょう
+# タスク定義
+## 定義のゴール
+![task](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/ECS.png)
 
-# トラブルシューティング
-## どこがダメか調べる
-ヒント
-- ログ見直す
-- flask側のコマンドを一旦 /bin/shとかに変えて、起動後すぐに死なないようにして、入って調査する
+## ローカルのDocker Imageを ECRへプッシュ
+AWSのIAM認証・権限でDocker push (git/codecommitのクレデンシャルヘルパーと同じ)
+なので、 `awscli` と、ECRへの強い権限を持つIAMが必要 = わからなければとりあえずadminロールもつcredentialで！
+
+プッシュまでの方法は、
+![push](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS.png)
+を参考にしてください、
+
+下記はサンプル
+```
+# タグを打って
+docker tag docker-ho:1.0 xxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:1.0
+docker tag docker-ho:1.0 xxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:latest
+
+# pushする
+docker push xxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:1.0 xxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:latest
+```
+
+## タスク定義の作成
+
+![step1](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-2.png)
+![push](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-3.png)
+![push](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-4.png)
+
+## サービス定義＆稼働
 
 # 後始末
-`docker-conpose down`
+cloudformation 親元スタックを delete stackすれば大抵消える。消えないものは手動で
+
