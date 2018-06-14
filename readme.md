@@ -9,6 +9,9 @@ git clone git@github.com:h-imaoka/ecs-handson.git
 git checkout -b local-docker origin/local-docker
 ```
 
+# 完成図
+![overview](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/local-docker.png)
+
 # コンテナ間通信用ネットワークの作成
 `docker network create flask-net`
 
