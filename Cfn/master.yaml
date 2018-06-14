@@ -33,15 +33,15 @@ Resources:
             Parameters:
                 EnvironmentName: !Ref AWS::StackName
                 VPC: !GetAtt VPC.Outputs.VPC
-    # ALB:
-    #     Type: AWS::CloudFormation::Stack
-    #     Properties:
-    #         TemplateURL: https://s3-ap-northeast-1.amazonaws.com/clp-imaoka/cfn/infrastructure/load-balancers.yaml
-    #         Parameters:
-    #             EnvironmentName: !Ref AWS::StackName
-    #             VPC: !GetAtt VPC.Outputs.VPC
-    #             Subnets: !GetAtt VPC.Outputs.PublicSubnets
-    #             SecurityGroup: !GetAtt SecurityGroups.Outputs.LoadBalancerSecurityGroup
+    ALB:
+        Type: AWS::CloudFormation::Stack
+        Properties:
+            TemplateURL: https://s3-ap-northeast-1.amazonaws.com/clp-imaoka/cfn/infrastructure/load-balancers.yaml
+            Parameters:
+                EnvironmentName: !Ref AWS::StackName
+                VPC: !GetAtt VPC.Outputs.VPC
+                Subnets: !GetAtt VPC.Outputs.PublicSubnets
+                SecurityGroup: !GetAtt SecurityGroups.Outputs.LoadBalancerSecurityGroup
 
     ECS:
         Type: AWS::CloudFormation::Stack
@@ -49,8 +49,8 @@ Resources:
             TemplateURL: https://s3-ap-northeast-1.amazonaws.com/clp-imaoka/cfn/infrastructure/ecs-cluster.yaml
             Parameters:
                 EnvironmentName: !Ref AWS::StackName
-                InstanceType: t2.large
-                ClusterSize: 2
+                InstanceType: t2.medium
+                ClusterSize: 1
                 VPC: !GetAtt VPC.Outputs.VPC
                 SecurityGroup: !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup
                 Subnet1: !GetAtt VPC.Outputs.PublicSubnet1
