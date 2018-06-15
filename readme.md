@@ -48,6 +48,7 @@ docker push xxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:1.0 xxxxxxx
 ![step1](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-2.png)
 ![push](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-3.png)
 ![img4](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-4.png)
+![docker](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/docker-image.png)
 ![img5](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-5.png)
 ![img6](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-6.png)
 
@@ -59,7 +60,6 @@ docker push xxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:1.0 xxxxxxx
 ![img9](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-9.png)
 ![img10](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-10.png)
 ![img11](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-11.png)
-![img12](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-12.png)
 
 ## これだと動かないよ！
 CloudWatch Logsでエージェントのログを調べてみよう
