@@ -10,6 +10,6 @@ services:
        - localdynamo
      image: docker-ho:1.1
      ports:
-       - "5000:5000"
+       - "5002:5000"
      environment:
        FLASK_APP_DYNAMO_HOST: "http://localdynamo:8000"
