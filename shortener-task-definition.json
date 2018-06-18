@@ -1,0 +1,37 @@
+{
+    "family": "ecs-handson", 
+    "containerDefinitions": [
+        {
+            "name": "app", 
+            "image": "351713052568.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson", 
+            "memoryReservation": 128, 
+            "portMappings": [
+                {
+                    "containerPort": 5000, 
+                    "hostPort": 0, 
+                    "protocol": "tcp"
+                }
+            ], 
+            "essential": true, 
+            "environment": [
+                {
+                    "name": "FLASK_APP_PRODUCTION", 
+                    "value": "YES"
+                },
+                {
+                    "name": "FLASK_APP_REGION", 
+                    "value": "ap-northeast-1"
+                }
+            ], 
+            "logConfiguration": {
+                "logDriver": "awslogs", 
+                "options": {
+                    "awslogs-region": "ap-northeast-1",
+                    "awslogs-stream-prefix": "flask",
+                    "awslogs-group": "task-handson"
+                }
+            }
+        }
+    ],
+    "placementConstraints": []
+}

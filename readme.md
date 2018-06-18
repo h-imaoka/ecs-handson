@@ -45,6 +45,9 @@ docker push xxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:1.0 xxxxxxx
 
 ## タスク定義の作成
 
+AWS-CLIでもできるようにしました。
+`aws ecs register-task-definition --cli-input-json file://shortener-task-definition.json`
+
 ![step1](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-2.png)
 ![push](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-3.png)
 ![img4](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/Amazon_ECS-4.png)
