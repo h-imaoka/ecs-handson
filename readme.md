@@ -29,8 +29,23 @@ http://0.0.0.0:8001/shell
 `docker build . -t docker-ho:1.0`
 
 # アプリ用 コンテナ作成
-`docker run -itd -P --network flask-net --name app0 -e FLASK_APP_DYNAMO_HOST="http://localdynamo:8000" docker-ho:1.0`
+`docker run -itd -p 5001:5000 --network flask-net --name app0 -e FLASK_APP_DYNAMO_HOST="http://localdynamo:8000" docker-ho:1.0`
 
 dynamo-localとコンテナ間通信をするため、 `flask-net` を利用する。
 `--name` で指定した名前で コンテナ内から名前解決できる。
 これを使って、 local-dynamoのエンドポイントを指定する=環境変数を上書きしている。
+
+# 確認
+http://0.0.0.0:5001
+
+# 次へ
+後片付け
+
+```sh
+docker ps
+# コンテナIDを取得して
+docker rm -f [コンテナID]
+```
+
+ブランチ切り替え
+`git checkout -b local-compose origin/local-compose`
