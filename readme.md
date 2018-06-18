@@ -6,7 +6,7 @@ Multi-Container @ local via docker-composer
 ```
 git clone git@github.com:h-imaoka/ecs-handson.git
 #とりあえずpull してから、ブランチ切り替え
-git checkout -b local-compose origin/local-compose-ans
+git checkout -b local-compose-ans origin/local-compose-ans
 ```
 
 # docker-compose の `depends_on`
