@@ -53,6 +53,9 @@ Resources:
             VpcId: !Ref VPC
             Port: 80
             Protocol: HTTP
+            TargetGroupAttributes:
+              - Key: deregistration_delay.timeout_seconds
+                Value: '30'
 
 Outputs:
 
