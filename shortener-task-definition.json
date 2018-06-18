@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "app", 
-            "image": "351713052568.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson", 
+            "image": "xxxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson", 
             "memoryReservation": 128, 
             "portMappings": [
                 {
