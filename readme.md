@@ -94,8 +94,8 @@ docker-compose up
 ```
 docker tag docker-ho:1.1 xxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:1.1
 docker tag docker-ho:1.1 xxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:latest
-docker push docker-ho:1.1 xxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:1.1
-docker push docker-ho:1.1 xxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:latest
+docker push xxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:1.1
+docker push xxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:latest
 ```
 
 ### タスク定義を変更
