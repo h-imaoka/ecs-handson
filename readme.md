@@ -32,9 +32,9 @@ aws s3 ls
 
 - SSHが必要
 - SG設定としては下記を開ける
--- 22 (ssh)
--- 8000-8010 (dynamo-local)
--- 5000-5010 (flask)
+  - 22 (ssh)
+  - 8000-8010 (dynamo-local)
+  - 5000-5010 (flask)
 - 1台でOK
 
 # ECS環境構築
@@ -44,6 +44,7 @@ aws s3 ls
 
 # アプリケーションをローカルで動かす (時間があれば)
 ![overview](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/local.png)
+開始まで時間が余っている人向け！
 
 ## ひつようなもの
 - docker
