@@ -40,7 +40,8 @@ docker tag docker-ho:1.0 xxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:
 docker tag docker-ho:1.0 xxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:latest
 
 # pushする
-docker push xxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:1.0 xxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:latest
+docker push xxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:1.0
+docker push xxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-hanson:latest
 ```
 
 ## タスク定義の作成
