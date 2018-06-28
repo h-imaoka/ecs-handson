@@ -1,0 +1,162 @@
+Description: >
+    This template deploys a VPC, with a pair of public and private subnets spread
+    across two Availabilty Zones. It deploys an Internet Gateway, with a default
+    route on the public subnets. It deploys a pair of NAT Gateways (one in each AZ),
+    and default routes for them in the private subnets.
+
+Parameters:
+
+    EnvironmentName:
+        Description: An environment name that will be prefixed to resource names
+        Type: String
+
+    VpcCIDR:
+        Description: Please enter the IP range (CIDR notation) for this VPC
+        Type: String
+        Default: 172.16.0.0/16
+
+    PublicSubnet1CIDR:
+        Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+        Type: String
+        Default: 172.16.10.0/24
+
+    EC2KeyPair:
+        Description: Please enter the key pair name for EC2 instance
+        Type: String
+
+
+Resources:
+
+    VPC:
+        Type: AWS::EC2::VPC
+        Properties:
+            CidrBlock: !Ref VpcCIDR
+            EnableDnsHostnames: true
+            Tags:
+                - Key: Name
+                  Value: !Ref EnvironmentName
+
+    InternetGateway:
+        Type: AWS::EC2::InternetGateway
+        Properties:
+            Tags:
+                - Key: Name
+                  Value: !Ref EnvironmentName
+
+    InternetGatewayAttachment:
+        Type: AWS::EC2::VPCGatewayAttachment
+        Properties:
+            InternetGatewayId: !Ref InternetGateway
+            VpcId: !Ref VPC
+
+    PublicSubnet1:
+        Type: AWS::EC2::Subnet
+        Properties:
+            VpcId: !Ref VPC
+            AvailabilityZone: !Select [ 0, !GetAZs '' ]
+            CidrBlock: !Ref PublicSubnet1CIDR
+            MapPublicIpOnLaunch: true
+            Tags:
+                - Key: Name
+                  Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
+
+    PublicRouteTable:
+        Type: AWS::EC2::RouteTable
+        Properties:
+            VpcId: !Ref VPC
+            Tags:
+                - Key: Name
+                  Value: !Sub ${EnvironmentName} Public Routes
+
+    DefaultPublicRoute:
+        Type: AWS::EC2::Route
+        DependsOn: InternetGatewayAttachment
+        Properties:
+            RouteTableId: !Ref PublicRouteTable
+            DestinationCidrBlock: 0.0.0.0/0
+            GatewayId: !Ref InternetGateway
+
+    PublicSubnet1RouteTableAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            RouteTableId: !Ref PublicRouteTable
+            SubnetId: !Ref PublicSubnet1
+
+    EC2Role:
+        Type: AWS::IAM::Role
+        Properties:
+            Path: /
+            RoleName: !Sub ${EnvironmentName}-EC2Role-${AWS::Region}
+            AssumeRolePolicyDocument: |
+                {
+                    "Statement": [{
+                        "Action": "sts:AssumeRole",
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "ec2.amazonaws.com"
+                        }
+                    }]
+                }
+            Policies:
+                - PolicyName: ecr-service
+                  PolicyDocument: |
+                    {
+                        "Statement": [{
+                            "Effect": "Allow",
+                            "Action": [
+                                "ecr:*"
+                            ],
+                            "Resource": "*"
+                        }]
+                    }
+
+    EC2InstanceProfile:
+        Type: AWS::IAM::InstanceProfile
+        Properties:
+            Path: /
+            Roles:
+                - !Ref EC2Role
+
+    EC2SG:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: Limits security group egress traffic
+        VpcId: !Ref VPC
+    SGEC2IngressSSH:
+      Type: AWS::EC2::SecurityGroupIngress
+      Properties:
+        IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 0.0.0.0/0
+        GroupId: !Ref EC2SG
+    SGEC2IngressDynamo:
+      Type: AWS::EC2::SecurityGroupIngress
+      Properties:
+        IpProtocol: tcp
+        FromPort: '8000'
+        ToPort: '8010'
+        CidrIp: 0.0.0.0/0
+        GroupId: !Ref EC2SG
+    SGEC2IngressFlask:
+      Type: AWS::EC2::SecurityGroupIngress
+      Properties:
+        IpProtocol: tcp
+        FromPort: '5000'
+        ToPort: '5010'
+        CidrIp: 0.0.0.0/0
+        GroupId: !Ref EC2SG
+
+    EC2Instance:
+      Type: AWS::EC2::Instance
+      Properties:
+        ImageId: ami-0dd817395062d54ca
+        InstanceType: t2.micro
+        KeyName: !Ref EC2KeyPair
+        SecurityGroupIds:
+          - !Ref EC2SG
+        IamInstanceProfile: !Ref EC2InstanceProfile
+        SubnetId: !Ref PublicSubnet1
+        Tags:
+          - Key: Name
+            Value: ec2-node-1
