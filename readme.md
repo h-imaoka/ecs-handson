@@ -19,7 +19,7 @@ git checkout -b local-docker origin/local-docker
 `docker run -d -p 8001:8000 --network flask-net --name localdynamo cnadiminti/dynamodb-local`
 
 ## dynamo-localのshellを確認してみる
-http://0.0.0.0:8001/shell
+http://127.0.0.1:8001/shell
 
 ただし、このアクセスはあくまでもローカルマシンからブラウザで確認するためだけのもの、`docker run`で指定した `-p 8001:8000` は必須ではない。
 
@@ -36,7 +36,7 @@ dynamo-localとコンテナ間通信をするため、 `flask-net` を利用す�
 これを使って、 local-dynamoのエンドポイントを指定する=環境変数を上書きしている。
 
 # 確認
-http://0.0.0.0:5001
+http://127.0.0.1:5001
 
 # 次へ
 後片付け
