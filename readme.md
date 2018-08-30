@@ -35,4 +35,4 @@ docker-composeの用途は非常に幅広く、使いこなせるようになる
 `docker-conpose down`
 
 # 次
-ブランチ切り替え `git checkout -b local-compose origin/local-compose-ans`
+ブランチ切り替え `git checkout -b local-compose-ans origin/local-compose-ans`
