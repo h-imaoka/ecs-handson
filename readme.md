@@ -18,15 +18,21 @@ git checkout -b local-compose origin/local-compose
 - 環境変数
 - 依存関係(起動順)
 
-運用上ほぼ必須になるはず、覚えておいて損はない。
+docker-composeの用途は非常に幅広く、使いこなせるようになると、ほとんどdockerコマンドは使わなくなります。覚えておいて損はないです。
 
 ### このままだと、うまく動きません！ので、調べて直しましょう
+結構な確率で `docker-compose up` のみで正常稼働するようです。  
+正常に稼働した場合は、`CTRL-C`で止めて、再度 `docker-compose start` してみてください  
+失敗した場合は handson コンテナのみ Exit 1 で停止状態となります。
 
 # トラブルシューティング
 ## どこがダメか調べる
 ヒント
-- ログ見直す
+- ログ見直す `docker-compose logs handson`
 - flask側のコマンドを一旦 /bin/shとかに変えて、起動後すぐに死なないようにして、入って調査する
 
 # 後始末
 `docker-conpose down`
+
+# 次
+ブランチ切り替え `git checkout -b local-compose origin/local-compose-ans`
