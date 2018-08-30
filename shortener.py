@@ -11,7 +11,7 @@ from pynamodb.attributes import UnicodeAttribute
 class Url(Model):
     class Meta:
         table_name = "shortened-urls"
-        host = "http://0.0.0.0:8000"
+        host = "http://127.0.0.1:8000"
         region = "us-west-2"
 
     class CodeIndex(GlobalSecondaryIndex):
