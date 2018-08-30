@@ -58,7 +58,7 @@ docker run -d -p 8000:8000 cnadiminti/dynamodb-local
 ```
 
 shell へアクセスできるか調べる
-http://0.0.0.0:8000/shell
+http://localhost:8000/shell
 
 ## パッケージインストール
 `pip install -r requrements.txt`
@@ -66,7 +66,7 @@ http://0.0.0.0:8000/shell
 ## 動かす
 `python shortener.py`
 
-http://0.0.0.0:5000
+http://localhost:5000
 
 # 次へ
 
