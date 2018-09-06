@@ -1,6 +1,21 @@
 ECS-handson
 ====
 
+# Windows git の注意点
+git clone の直後に
+
+```
+git config --local core.autoCRLF false
+git status 
+# で差分がいっぱいでる
+git checkout . 
+# で差分消滅
+```
+
+として、すべてのファイルの改行コードを `LF` に変更してください。
+
+本コマンドでは、cloneしたローカルリポジトリのみの設定ですが、これからDockerを始めるにあたり `--global` で全体設定とすることを勧めます。
+
 # 今回作るもの
 元ソースはこちら
 https://github.com/pynamodb/PynamoDB/tree/master/examples/url_shortener
@@ -18,7 +33,7 @@ docker ps
 接続できないとかエラーが出ないこと
 ```
 
-## `aws` コマンドが使えて、自分のアカウントのcredentialが仕込まれている
+## (Dockerのみなら不要) `aws` コマンドが使えて、自分のアカウントのcredentialが仕込まれている
 ```
 aws s3 ls
 
@@ -60,8 +75,12 @@ docker run -d -p 8000:8000 cnadiminti/dynamodb-local
 shell へアクセスできるか調べる
 http://localhost:8000/shell
 
+DockerToolboxのの場合は (docker-machine ip のIP)
+http://192.168.99.100:8000/shell
+
+
 ## パッケージインストール
-`pip install -r requrements.txt`
+`pip install -r requirements.txt`
 
 ## 動かす
 `python shortener.py`
