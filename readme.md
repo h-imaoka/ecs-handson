@@ -1,6 +1,10 @@
 ECS-handson
 ====
-
+# 最初の一歩
+```
+git clone <このリポジトリ>
+cd ecs-handson
+```
 # Windows git の注意点
 git clone の直後に
 
