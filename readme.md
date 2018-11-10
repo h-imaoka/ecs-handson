@@ -92,5 +92,8 @@ http://192.168.99.100:8000/shell
 http://localhost:5000
 
 # 次へ
+ブランチを切り替えて進む
 
 `git checkout -b local-docker origin/local-docker`
+
+https://github.com/h-imaoka/ecs-handson/blob/local-docker/readme.md
