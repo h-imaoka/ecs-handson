@@ -50,4 +50,4 @@ docker rm -f [コンテナID]
 ブランチ切り替え
 `git checkout -b local-compose origin/local-compose`
 
-https://github.com/h-imaoka/ecs-handson/blob/local-/readme.md
+https://github.com/h-imaoka/ecs-handson/blob/local-compose/readme.md
