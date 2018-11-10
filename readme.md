@@ -36,3 +36,5 @@ docker-composeの用途は非常に幅広く、使いこなせるようになる
 
 # 次
 ブランチ切り替え `git checkout -b local-compose-ans origin/local-compose-ans`
+
+https://github.com/h-imaoka/ecs-handson/blob/local-compose-ans/readme.md
