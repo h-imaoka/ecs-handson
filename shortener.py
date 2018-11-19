@@ -68,4 +68,4 @@ if __name__ == "__main__":
     if not Url.exists():
         print("Creating table...")
         Url.create_table(wait=True, read_capacity_units=1, write_capacity_units=1)
-    app.run()
+    app.run(host='0.0.0.0')

@@ -65,7 +65,7 @@ aws s3 ls
 ![overview](https://raw.githubusercontent.com/h-imaoka/ecs-handson/images/images/local.png)
 開始まで時間が余っている人向け！
 
-## ひつようなもの
+## 必要なもの
 - docker
 - python 2.7 or 3
 - pip (python)
@@ -90,6 +90,12 @@ http://192.168.99.100:8000/shell
 `python shortener.py`
 
 http://localhost:5000
+
+credentialがないとか、エラーが出た場合は下記を叩いてください。
+```
+export AWS_ACCESS_KEY_ID=dummy
+export AWS_SECRET_ACCESS_KEY=dummy
+```
 
 # 次へ
 ブランチを切り替えて進む
