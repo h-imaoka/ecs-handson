@@ -29,7 +29,9 @@ http://127.0.0.1:8001/shell
 `docker build . -t docker-ho:1.0`
 
 # アプリ用 コンテナ作成
-`docker run -itd -p 5001:5000 --network flask-net --name app0 -e FLASK_APP_DYNAMO_HOST="http://localdynamo:8000" docker-ho:1.0`
+```
+docker run -itd -p 5001:5000 --network flask-net --name app0 -e FLASK_APP_DYNAMO_HOST="http://localdynamo:8000" docker-ho:1.0
+```
 
 dynamo-localとコンテナ間通信をするため、 `flask-net` を利用する。
 `--name` で指定した名前で コンテナ内から名前解決できる。
