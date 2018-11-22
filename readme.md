@@ -5,7 +5,8 @@
 
 ```
 git clone https://github.com/h-imaoka/ecs-handson.git
-#とりあえずpull してから、ブランチ切り替え
+#とりあえずpull してから、ブランチ切り替
+cd ecs-handson
 git checkout -b local-docker origin/local-docker
 ```
 
