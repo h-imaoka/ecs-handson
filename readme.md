@@ -4,7 +4,7 @@
 # step 0 gitの使い方
 
 ```
-git clone git@github.com:h-imaoka/ecs-handson.git
+git clone https://github.com/h-imaoka/ecs-handson.git
 #とりあえずpull してから、ブランチ切り替え
 git checkout -b local-docker origin/local-docker
 ```
